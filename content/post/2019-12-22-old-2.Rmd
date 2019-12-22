@@ -1,0 +1,90 @@
+---
+title: OLD.2
+author: Quant Monkey
+date: '2019-12-22'
+slug: old-2
+categories: []
+tags: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=F, warning=F)
+# knitr::opts_chunk$set(echo=T, fig.align = "center", fig.height = 8, cache=T, dpi = 300, dev = "jpg")
+```
+
+
+### 종목코드 크롤링
+
+한국거래소에서 종목코드를 가져오기 위하여 크롤링방법이 필요하다.
+전부 [해당사이트](https://hyunyulhenry.github.io/quant_cookbook/index.html) 나와있는 방법을 그대로 따라한 것이다. 최근에 책으로 완성된 사이트이며, 사실 내가 하고싶은 대부분이 이책에 들어가있다.
+
+2가지 패키지를 설치한다.
+```{r rvest,httr}
+library(httr)
+library(rvest)
+```
+
+`httr` 패키지는 데이터를 얻고자 하는 사이트에 **GET** 과 **POST** 2가지 방식으로 데이터를 요청하여 가져온다.`rvest` 는 가져온 html 데이터를 분해하여 필요한 부분만 추출하는데 사용된다. 역시 자세한 설명은 위에 소개한 사이트의 챔터4를 참고하면 된다.
+
+[한국거래소](http://marketdata.krx.co.kr/mdi#document=03030103) 의 산업별 현황 테이블을 가져오기 위해서는 2가지 단계가 필요하다.
+
+1. OTP 코드 가져오기
+```{r httr}
+gen_otp_url <- 'http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx'
+gen_otp_data<-
+  POST(gen_otp_url,
+       query= list(
+        name = 'fileDown',
+        filetype = 'csv',
+        url = 'MKD/03/0303/03030103/mkd03030103',
+        tp_cd = 'ALL',
+        date = '20190607',
+        lang = 'ko',
+        pagePath = '/contents/MKD/03/0303/03030103/MKD03030103.jsp'))
+# httr::POST 를 활용하여 otp 가 있는 html 데이터 가져오기
+
+otp <- gen_otp_data %>% 
+  read_html() %>% 
+  html_text()
+# rvest 의 함수를 이용하여 필요한 otp 값 불러오기
+```
+
+2. 종목코드 테이블 가져오기
+```{r }
+library(readr) # read_csv() 함수를 위한 패키지
+down_url <- 'http://file.krx.co.kr/download.jspx'
+down_sector <- POST(down_url, query = list(code = otp),
+                   add_headers(referer = gen_otp_url)) %>%
+                   read_html() %>%
+                   html_text() %>%
+                   read_csv()
+# add_headers 에서 referer 는 흔적을 남기는 과정인데, 그래야지 사이트가 우리를 로봇이라고 인지하지 않고 데이터를 준다고 한다.
+```
+
+잘 저장되었는지 확인하자
+
+```{r }
+head(down_sector)
+```
+
+디렉토리를 만들고 파일을 저장한다.
+```{r }
+ifelse(dir.exists('data'), FALSE, dir.create('data')) 
+write.csv(down_sector, 'data/krx_sector.csv')
+```
+
+
+### Summary
+1. 크롤링을 통하여 필요한 데이터를 가져온다.
+2. `httr` 의 **GET**,**POST** 함수로 html 데이터를 받을 수 있다.
+3. `rvest` 로 html 의 필요한 데이터만 추출할 수 있다.
+
+### 계획
+1. ~~기업주가 가져오기 : `quantmod`~~
+2. ~~기업코드 가져오기 : `httr`,`rvest`~~
+3. 모든 기업의 주가가져오기
+4. 주가를 이용한 모멘텀 지표만들기
+5. 모멘텀 지표로 기업선정하기
+6. 재무제표 정보가져오기
+7. 재무제표로 우량주 지표를 만들고 기업선정하기
+8. 모멘텀지표 + 우량주지표로 기업 선정하기

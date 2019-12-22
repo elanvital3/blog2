@@ -12,13 +12,25 @@
     
     
     <item>
-      <title>step.1</title>
+      <title>OLD.1</title>
       <link>/2019/12/22/step-1/</link>
       <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/12/22/step-1/</guid>
       <description>Quantmod packagelibrary(quantmod)quantmod package 를 설치하고 주가를 불러오는 함수getSymbols() 를 사용해보자. 주식코드번호에 코스피면 .KS,코스닥이면 .KQ 을 붙이면 된다. 최애주인 SK이노베이션으로 해보자.
 stock&amp;lt;-getSymbols(Symbols = &amp;quot;096770.KS&amp;quot;,from= &amp;quot;2017-04-03&amp;quot;,to = &amp;quot;2017-04-07&amp;quot;,auto.assign = FALSE)stock## 096770.KS.Open 096770.KS.High 096770.KS.Low 096770.KS.Close## 2017-04-03 167000 168500 165500 166000## 2017-04-04 165500 166000 161000 163000## 2017-04-05 164500 165500 162500 163500## 2017-04-06 163000 164500 161000 162500## 2017-04-07 163500 165000 162500 164500## 096770.</description>
+    </item>
+    
+    <item>
+      <title>OLD.2</title>
+      <link>/2019/12/22/old-2/</link>
+      <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/22/old-2/</guid>
+      <description>종목코드 크롤링한국거래소에서 종목코드를 가져오기 위하여 크롤링방법이 필요하다.전부 해당사이트 나와있는 방법을 그대로 따라한 것이다. 최근에 책으로 완성된 사이트이며, 사실 내가 하고싶은 대부분이 이책에 들어가있다.
+2가지 패키지를 설치한다.
+library(httr)library(rvest)httr 패키지는 데이터를 얻고자 하는 사이트에 GET 과 POST 2가지 방식으로 데이터를 요청하여 가져온다.rvest 는 가져온 html 데이터를 분해하여 필요한 부분만 추출하는데 사용된다. 역시 자세한 설명은 위에 소개한 사이트의 챔터4를 참고하면 된다.
+한국거래소 의 산업별 현황 테이블을 가져오기 위해서는 2가지 단계가 필요하다.</description>
     </item>
     
     <item>

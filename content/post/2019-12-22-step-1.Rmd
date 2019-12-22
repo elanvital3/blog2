@@ -1,11 +1,10 @@
 ---
-title: step.1
-author: KIMKIM
+title: OLD.1
+author: Quant Monkey
 date: '2019-12-22'
 slug: step-1
 categories: []
 tags: []
-
 ---
 
 ```{r setup, include=FALSE}
