@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.61.0" />
+
+
+<title>OLD.3 - A Hugo website</title>
+<meta property="og:title" content="OLD.3 - A Hugo website">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">OLD.3</h1>
+
+    
+    <span class="article-date">2019-12-22</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div id="최신영업일-가져오기" class="section level3">
+<h3>최신영업일 가져오기</h3>
+<p><strong><a href="https://hyunyulhenry.github.io/quant_cookbook/index.html">해당사이트</a> 에서 방법을 가져와서 정리한 것</strong></p>
+<p>네이버금융의 최신영업일 가져오는 것을 해보겠다.
+저번시간엔 <code>httr</code> 의 <strong>GET, POST</strong> 방법으로 html 데이터를 가져온 뒤, <code>rvest</code> 로 필요한 데이터를 가져왔다. 이번에는 <code>Xpath</code> 를 이용하여 가져와보자.</p>
+<p>이전과 같이 2가지 패키지를 불러온다.
+크롬에서 복사한 xpath 를 직접 넣어주면 된다.</p>
+<pre class="r"><code>library(httr)
+library(rvest)
+
+url=&#39;https://finance.naver.com/sise/sise_deposit.nhn&#39;
+
+biz_day = GET(url) %&gt;% 
+  read_html(encoding = &#39;EUC-KR&#39;) %&gt;% 
+  html_nodes(xpath=
+               &#39;//*[@id=&quot;type_0&quot;]/div/ul[2]/li/span&#39;) %&gt;% 
+  html_text()
+
+print(biz_day)</code></pre>
+<pre><code>## [1] &quot;&lt;U+00A0&gt;&lt;U+00A0&gt;|&lt;U+00A0&gt;&lt;U+00A0&gt;2019.12.18&quot;</code></pre>
+<p>우리가 원하는 형태로 <code>date = '20190807'</code> 변경하기 위하여,
+<code>stringr</code> 패키지를 설치 후 불러온다.</p>
+<pre class="r"><code>library(stringr) #문자패턴을 수정
+biz_day = biz_day %&gt;% 
+  str_match((&#39;[0-9]+.[0-9]+.[0-9]+&#39;) ) %&gt;%
+  str_replace_all(&#39;\\.&#39;, &#39;&#39;)
+print(biz_day)</code></pre>
+<pre><code>## [1] &quot;20191218&quot;</code></pre>
+<p>복습도 할겸,
+앞에 배웠던 <strong>종목코드 가져오기</strong> 에 <code>biz_day</code> 를 넣어보자.</p>
+<pre class="r"><code># 1. OTP 발급
+gen_otp_url &lt;- &#39;http://marketdata.krx.co.kr/contents/COM/GenerateOTP.jspx&#39;
+gen_otp_data&lt;-
+  POST(gen_otp_url,
+       query= list(
+        name = &#39;fileDown&#39;,
+        filetype = &#39;csv&#39;,
+        url = &#39;MKD/03/0303/03030103/mkd03030103&#39;,
+        tp_cd = &#39;ALL&#39;,
+        date = biz_day,
+        lang = &#39;ko&#39;,
+        pagePath = &#39;/contents/MKD/03/0303/03030103/MKD03030103.jsp&#39;))
+# httr::POST 를 활용하여 otp 가 있는 html 데이터 가져오기
+
+otp &lt;- gen_otp_data %&gt;% 
+  read_html() %&gt;% 
+  html_text()
+# rvest 의 함수를 이용하여 필요한 otp 값 불러오기
+
+# 2. POST 로 다운로드
+library(readr) # read_csv() 함수를 위한 패키지
+down_url &lt;- &#39;http://file.krx.co.kr/download.jspx&#39;
+down_sector &lt;- POST(down_url, query = list(code = otp),
+                   add_headers(referer = gen_otp_url)) %&gt;%
+                   read_html() %&gt;%
+                   html_text() %&gt;%
+                   read_csv()
+
+down_sector = down_sector[order(down_sector$`시가총액(원)`,decreasing=TRUE),] #시가 총액순서로 정렬
+
+print(head(down_sector))</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##   시장구분 종목코드 종목명       산업분류 `현재가(종가)` 전일대비 `시가총액(원)`
+##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;        &lt;chr&gt;             &lt;dbl&gt;    &lt;dbl&gt;          &lt;dbl&gt;
+## 1 코스피   005930   삼성전자     전기전자          56300     -400        3.36e14
+## 2 코스피   000660   SK하이닉스   전기전자          93000      200        6.77e13
+## 3 코스피   005935   삼성전자우   전기전자          46700      200        3.84e13
+## 4 코스피   035420   NAVER        서비스업         178500    -2000        2.94e13
+## 5 코스피   005380   현대차       운수장비         123000     1000        2.63e13
+## 6 코스피   207940   삼성바이오로직스~ 의약품           394500     -500        2.61e13</code></pre>
+<pre class="r"><code>write.csv(down_sector, &#39;data/krx_sector.csv&#39;,row.names = F)</code></pre>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

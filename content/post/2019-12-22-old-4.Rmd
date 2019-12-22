@@ -1,0 +1,125 @@
+---
+title: OLD.4
+author: Quant Monkey
+date: '2019-12-22'
+slug: old-4
+categories: []
+tags: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=F, warning=F)
+```
+
+# 모든기업 주가가져오기
+
+2장에서 한국거래소에서 가져온 종목코드로,
+1장에서 종목코드로 주가정보를 가져오는 방법에 적용시켜보자.
+
+``` {r}
+CODE = read.csv('C:/Users/elanv/OneDrive/Documents/data/krx_sector.csv')
+head(CODE)
+
+TEST_CODE = CODE[3,]$종목코드
+```
+
+그전에,
+getSymbols 로 월별 주식을 가져와서, 컬럼명을 변경해주는 함수를 하나 만들자.
+```{r}
+getData<-function(x,from,to){
+  if(missing (from)){
+    stock <- getSymbols(paste0(x,".KS"),auto.assign = F,periodicity = "monthly")
+  }else if(missing(to)){
+    stock <- getSymbols(paste0(x,".KS"),from=from,auto.assign = F,periodicity = "monthly")
+  }else{
+    stock <- getSymbols(paste0(x,".KS"),from=from,to=to,auto.assign = F,periodicity = "monthly")}
+  stock<-stock[Vo(stock)>0] #거래량 0 이상
+  colnames(stock)<-c('open','high','low','close','volume','adjusted')
+  return(stock)
+}
+
+
+```
+
+
+```{r}
+library(quantmod)
+library(dplyr)
+
+price = NULL
+
+for (i in 1:5) {
+  stock=getData(CODE[i,'종목코드'],
+        from = "2019-01-01")
+  
+  stock[icbind(stock[i,],CODE[i.])
+  price = rbind(price,stock)
+}
+
+View(price)
+
+
+
+getSymbols(
+  Symbols = paste0(TEST_CODE,".KS"),
+  from= "2016-06-01",
+  to = "2016-12-31",
+  auto.assign = F,
+  periodicity = "monthly"
+)
+
+try({
+getSymbols(
+  Symbols = paste0(CODE[2232,]$종목코드,".KS"),
+  from= "2016-06-01",
+  to = "2016-12-31",
+  auto.assign = F,
+  periodicity = "monthly"
+)
+  print("AAA")},silent=T)
+
+
+
+CODE[3,]$`종목코드`
+CODE[i,]$종목코드
+
+getSymbols(
+  Symbols = paste0(CODE[3,]$'종목코드',".KS"),
+  from= "2016-06-01",
+  to = "2016-12-31",
+  auto.assign = F,
+  periodicity = "monthly"
+)
+
+i=1
+for (i in 1:4) 
+  {tryCatch(
+  getSymbols(
+  Symbols = paste0(CODE[i,]$`종목코드`,".KS"),
+  from= "2016-06-01",
+  to = "2016-12-31",
+  auto.assign = F,
+  periodicity = "monthly"
+),
+  error = function(e) print("I am error"),
+  warning = function(w) print("I am warning")
+)
+}
+
+price=NULL
+i=1
+for (i in 1:4) {
+  price0 =
+    getSymbols(
+      Symbols = paste0(CODE[i,`종목코드`],".KS"),
+      from= "2016-06-01",
+      to = "2016-12-31",
+      auto.assign = F,
+      periodicity = "monthly")
+  price0$종목명 = CODE[i,'종목명']
+  price = rbind(price,price0)
+}
+CODE[i,'종목명']
+
+View(price)
+```

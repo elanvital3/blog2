@@ -34,6 +34,27 @@ library(httr)library(rvest)httr 패키지는 데이터를 얻고자 하는 사
     </item>
     
     <item>
+      <title>OLD.3</title>
+      <link>/2019/12/22/old-3/</link>
+      <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/22/old-3/</guid>
+      <description>최신영업일 가져오기해당사이트 에서 방법을 가져와서 정리한 것
+네이버금융의 최신영업일 가져오는 것을 해보겠다.저번시간엔 httr 의 GET, POST 방법으로 html 데이터를 가져온 뒤, rvest 로 필요한 데이터를 가져왔다. 이번에는 Xpath 를 이용하여 가져와보자.
+이전과 같이 2가지 패키지를 불러온다.크롬에서 복사한 xpath 를 직접 넣어주면 된다.
+library(httr)library(rvest)url=&amp;#39;https://finance.naver.com/sise/sise_deposit.nhn&amp;#39;biz_day = GET(url) %&amp;gt;% read_html(encoding = &amp;#39;EUC-KR&amp;#39;) %&amp;gt;% html_nodes(xpath=&amp;#39;//*[@id=&amp;quot;type_0&amp;quot;]/div/ul[2]/li/span&amp;#39;) %&amp;gt;% html_text()print(biz_day)## [1] &amp;quot;&amp;lt;U+00A0&amp;gt;&amp;lt;U+00A0&amp;gt;|&amp;lt;U+00A0&amp;gt;&amp;lt;U+00A0&amp;gt;2019.12.18&amp;quot;우리가 원하는 형태로 date = &#39;20190807&#39; 변경하기 위하여,stringr 패키지를 설치 후 불러온다.</description>
+    </item>
+    
+    <item>
+      <title>OLD.4</title>
+      <link>/2019/12/22/old-4/</link>
+      <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/12/22/old-4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>A Plain Markdown Post</title>
       <link>/2016/12/30/a-plain-markdown-post/</link>
       <pubDate>Fri, 30 Dec 2016 21:49:57 -0700</pubDate>

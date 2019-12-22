@@ -70,7 +70,7 @@ head(down_sector)
 디렉토리를 만들고 파일을 저장한다.
 ```{r }
 ifelse(dir.exists('data'), FALSE, dir.create('data')) 
-write.csv(down_sector, 'data/krx_sector.csv')
+write.csv(down_sector, 'C:/Users/elanv/OneDrive/Documents/data/krx_sector.csv')
 ```
 
 
