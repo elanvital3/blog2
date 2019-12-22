@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="/css/fonts.css" media="all">
 <link rel="stylesheet" href="/css/main.css" media="all">
 
@@ -57,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">step.1</h1>
@@ -70,9 +75,99 @@
       
 
 
-<div id="r-markdown" class="section level1">
-<h1>R Markdown</h1>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
+<div id="quantmod-package" class="section level3">
+<h3><code>Quantmod</code> package</h3>
+<pre class="r"><code>library(quantmod)</code></pre>
+<p><code>quantmod</code> package 를 설치하고 주가를 불러오는 함수
+<code>getSymbols()</code> 를 사용해보자. 주식코드번호에 코스피면 <code>.KS</code>,코스닥이면 <code>.KQ</code> 을 붙이면 된다. 최애주인 SK이노베이션으로 해보자.</p>
+<pre class="r"><code>stock&lt;-getSymbols(Symbols = &quot;096770.KS&quot;,
+                  from= &quot;2017-04-03&quot;,
+                  to = &quot;2017-04-07&quot;,
+                  auto.assign = FALSE)
+stock</code></pre>
+<pre><code>##            096770.KS.Open 096770.KS.High 096770.KS.Low 096770.KS.Close
+## 2017-04-03         167000         168500        165500          166000
+## 2017-04-04         165500         166000        161000          163000
+## 2017-04-05         164500         165500        162500          163500
+## 2017-04-06         163000         164500        161000          162500
+## 2017-04-07         163500         165000        162500          164500
+##            096770.KS.Volume 096770.KS.Adjusted
+## 2017-04-03           121172           152436.8
+## 2017-04-04           246259           149681.9
+## 2017-04-05           174394           150141.0
+## 2017-04-06           206571           149222.7
+## 2017-04-07           174225           151059.3</code></pre>
+<p>시가(open),고가(high),저가(low),종가(close),거래량(volume),수정주가(adjusted) 데이터를 불러왔다.</p>
+<p>수정주가는 종가 기준이며, 모든 가격을 수정가격으로 하고 싶을때는 <code>adjustOHLC</code> 함수를 사용하면 된다.</p>
+<pre class="r"><code>stock&lt;-adjustOHLC(stock,use.Adjusted = T)
+stock</code></pre>
+<pre><code>##            096770.KS.Open 096770.KS.High 096770.KS.Low 096770.KS.Close
+## 2017-04-03       153355.1       154732.5      151977.6        152436.8
+## 2017-04-04       151977.6       152436.8      147845.3        149681.9
+## 2017-04-05       151059.3       151977.6      149222.7        150141.0
+## 2017-04-06       149681.9       151059.3      147845.3        149222.7
+## 2017-04-07       150141.0       151518.5      149222.7        151059.3
+##            096770.KS.Volume 096770.KS.Adjusted
+## 2017-04-03           121172           152436.8
+## 2017-04-04           246259           149681.9
+## 2017-04-05           174394           150141.0
+## 2017-04-06           206571           149222.7
+## 2017-04-07           174225           151059.3</code></pre>
+<pre class="r"><code>colnames(stock)&lt;-c(&#39;open&#39;,&#39;high&#39;,&#39;low&#39;,&#39;close&#39;,&#39;volume&#39;,&#39;adjusted&#39;) #컬럼명 변경</code></pre>
+<p>간단히 그래프를 그려보기 앞서,
+<code>getSymbols</code> 불러온 데이터의 class 는 데이터 프레임이 아닌 <code>xts</code> 이다.
+일반적인 <code>plot()</code> 그래프를 그릴수 있지만,</p>
+<pre class="r"><code>class(stock)</code></pre>
+<pre><code>## [1] &quot;xts&quot; &quot;zoo&quot;</code></pre>
+<pre class="r"><code>plot(stock$close) </code></pre>
+<p><img src="/post/2019-12-22-step-1_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><code>chartSeries()</code> 함수로 눈에 익숙한 주식차트를 그릴수 있다.
+(데이터 형태가 <code>xts</code> 만 사용가능)</p>
+<pre class="r"><code>chartSeries(stock) </code></pre>
+<p><img src="/post/2019-12-22-step-1_files/figure-html/chartseries-1.png" width="672" /></p>
+<p>색이 익숙하지 않다.</p>
+<pre class="r"><code>chartSeries(stock,
+            up.col=&#39;red&#39;,
+            dn.col=&#39;blue&#39;,
+            theme = &#39;white&#39;,
+            name=&#39;SK이노베이션&#39;) </code></pre>
+<p><img src="/post/2019-12-22-step-1_files/figure-html/chartseries%20option-1.png" width="672" /></p>
+<p>어설프지만, 어느정도 익숙한 차트가 그려졌다.
+마지막으로 좀더 긴 기간의 데이터에 보조지표를 그려보자.</p>
+<pre class="r"><code>stock2 &lt;- getSymbols(Symbols = &quot;096770.KS&quot;,
+                  from= &quot;2016-01-01&quot;,
+                  to = &quot;2016-12-31&quot;,
+                  auto.assign = FALSE) #주가 데이터 불러오기
+stock2&lt;-adjustOHLC(stock2,use.Adjusted = T) #수정주가로 변환 
+colnames(stock2)&lt;-c(&#39;open&#39;,&#39;high&#39;,&#39;low&#39;,&#39;close&#39;,&#39;volume&#39;,&#39;adjusted&#39;) # 컬럼명 변경</code></pre>
+<pre class="r"><code>addMACD() #MACD 추가</code></pre>
+<p><img src="/post/2019-12-22-step-1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>addBBands() #볼린져밴드 추가</code></pre>
+<p><img src="/post/2019-12-22-step-1_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+<pre class="r"><code>addSMA(10,col=&#39;red&#39;) #이동평균선 추가</code></pre>
+<p><img src="/post/2019-12-22-step-1_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<ol style="list-style-type: decimal">
+<li>R package <code>quantmod</code></li>
+<li><code>getSymbols()</code> 함수로 주가정보를 가져오고, 전처리를 할 수 있다.</li>
+<li><code>chartSeries()</code> 함수로 주가차트를 그리고, 보조지표를 추가 할 수 있다.</li>
+</ol>
+</div>
+<div id="계획" class="section level3">
+<h3>계획</h3>
+<ol style="list-style-type: decimal">
+<li><del>기업주가 가져오기 : <code>quantmod</code></del></li>
+<li>기업코드 가져오기</li>
+<li>모든 기업의 주가가져오기</li>
+<li>주가를 이용한 모멘텀 지표만들기</li>
+<li>모멘텀 지표로 기업선정하기</li>
+<li>재무제표 정보가져오기</li>
+<li>재무제표로 우량주 지표를 만들고 기업선정하기</li>
+<li>모멘텀지표 + 우량주지표로 기업 선정하기</li>
+</ol>
+<p>@ 환율, 경제지표 참조하기</p>
 </div>
 
     </div>
@@ -97,7 +192,22 @@
     </div>
     
 
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
     
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 
     
   </body>
