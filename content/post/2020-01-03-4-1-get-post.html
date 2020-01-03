@@ -15,16 +15,15 @@ tags: []
 Figure 1: A caption
 </p>
 </div>
-<div id="crawling" class="section level3">
-<h3>Crawling</h3>
+<div id="crawling" class="section level1">
+<h1>Crawling</h1>
 <p>크롤링에는 <code>GET</code> 과 <code>POST</code> 크게2가지 방식이 있다.</p>
-<p><code>GET</code> 방식은 인터넷 주소를 기준으로 이에 해당하는 데이터나 파일을 요청하는 것이다. 주로 클라이언트가 요청하는 쿼리를 앰퍼샌드(&amp;) 혹은 물음표(?) 형식으로 결합해 서버에 전달한다.
-<code>POST</code> 방식은 사용자가 필요한 값을 추가해서 요청하는 방법입니다. GET 방식과 달리 클라이언트가 요청하는 쿼리를 body에 넣어서 전송하므로 요청 내역을 직접 볼 수 없다.</p>
+<p><code>GET</code> 방식은 인터넷 주소를 기준으로 이에 해당하는 데이터나 파일을 요청하는 것이다. 주로 클라이언트가 요청하는 쿼리를 앰퍼샌드(&amp;) 혹은 물음표(?) 형식으로 결합해 서버에 전달한다.</p>
+<p><code>POST</code> 방식은 사용자가 필요한 값을 추가해서 요청하는 방법입니다. GET 방식과 달리 클라이언트가 요청하는 쿼리를 body에 넣어서 전송하므로 요청 내역을 직접 볼 수 없다.</p>
 <hr />
 </div>
-<div id="httr-rvest-packages" class="section level2">
-<h2>### <code>httr</code>, <code>rvest</code> Packages ###</h2>
-</div>
+<div id="httr-rvest-packages" class="section level1">
+<h1>httr, rvest Packages</h1>
 <div id="금융속보-크롤링-get" class="section level2">
 <h2>금융속보 크롤링 (GET)</h2>
 <div class="figure"><span id="fig:unnamed-chunk-2"></span>
@@ -42,7 +41,7 @@ url = &quot;https://finance.naver.com/news/news_list.nhn?mode=LSS2D&amp;section_
 data = GET(url = url)
 print(data) # status 확인</code></pre>
 <pre><code>## Response [https://finance.naver.com/news/news_list.nhn?mode=LSS2D&amp;section_id=101&amp;section_id2=258]
-##   Date: 2020-01-03 15:20
+##   Date: 2020-01-03 15:27
 ##   Status: 200
 ##   Content-Type: text/html;charset=EUC-KR
 ##   Size: 56 kB
@@ -114,5 +113,6 @@ read_html(url,encoding = &quot;EUC-KR&quot;) %&gt;% html_nodes(&quot;.articleSub
 </div>
 <div id="내부자료" class="section level2">
 <h2><embed src="%22img/Fig4.1.3.png%22" /></h2>
-<pre><code>## 주식티커 크롤링2 ##</code></pre>
+<pre><code>## 주식티커 크롤링2 </code></pre>
+</div>
 </div>

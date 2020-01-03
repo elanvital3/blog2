@@ -18,8 +18,9 @@
       
       <guid>/2020/01/03/4-1-get-post/</guid>
       <description>Figure 1: A captionCrawling크롤링에는 GET 과 POST 크게2가지 방식이 있다.
-GET 방식은 인터넷 주소를 기준으로 이에 해당하는 데이터나 파일을 요청하는 것이다. 주로 클라이언트가 요청하는 쿼리를 앰퍼샌드(&amp;amp;) 혹은 물음표(?) 형식으로 결합해 서버에 전달한다.POST 방식은 사용자가 필요한 값을 추가해서 요청하는 방법입니다. GET 방식과 달리 클라이언트가 요청하는 쿼리를 body에 넣어서 전송하므로 요청 내역을 직접 볼 수 없다.
-### httr, rvest Packages ###금융속보 크롤링 (GET)Figure 2: A captionlibrary(httr)library(rvest)url = &amp;quot;https://finance.</description>
+GET 방식은 인터넷 주소를 기준으로 이에 해당하는 데이터나 파일을 요청하는 것이다. 주로 클라이언트가 요청하는 쿼리를 앰퍼샌드(&amp;amp;) 혹은 물음표(?) 형식으로 결합해 서버에 전달한다.
+POST 방식은 사용자가 필요한 값을 추가해서 요청하는 방법입니다. GET 방식과 달리 클라이언트가 요청하는 쿼리를 body에 넣어서 전송하므로 요청 내역을 직접 볼 수 없다.
+httr, rvest Packages금융속보 크롤링 (GET)Figure 2: A captionlibrary(httr)library(rvest)url = &amp;quot;https://finance.</description>
     </item>
     
     <item>

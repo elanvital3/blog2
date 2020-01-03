@@ -17,17 +17,20 @@ knitr::opts_chunk$set(echo = TRUE, message=F, warning=F)
 knitr::include_graphics("img/Fig4.1.1.png")
 ```
 
-### Crawling ###
+# Crawling
+
 크롤링에는 `GET` 과 `POST` 크게2가지 방식이 있다.
 
 `GET` 방식은 인터넷 주소를 기준으로 이에 해당하는 데이터나 파일을 요청하는 것이다. 주로 클라이언트가 요청하는 쿼리를 앰퍼샌드(&) 혹은 물음표(?) 형식으로 결합해 서버에 전달한다. 
+
 `POST` 방식은 사용자가 필요한 값을 추가해서 요청하는 방법입니다. GET 방식과 달리 클라이언트가 요청하는 쿼리를 body에 넣어서 전송하므로 요청 내역을 직접 볼 수 없다.
 
 ---
 
-### `httr`, `rvest` Packages ###
----
-## 금융속보 크롤링 (GET) ##
+# httr, rvest Packages 
+
+
+## 금융속보 크롤링 (GET) 
 ```{r, echo=FALSE, fig.cap="A caption", out.width = '100%'}
 knitr::include_graphics("img/Fig4.1.2.png")
 ```
@@ -55,7 +58,7 @@ read_html(url,encoding = "EUC-KR") %>% html_nodes(".articleSubject a") %>% html_
 
 ```
 ---
-## 기업공시 크롤링 (POST) ##
+## 기업공시 크롤링 (POST) 
 ```{r, echo=FALSE, fig.cap="A caption", out.width = '100%'}
 knitr::include_graphics("img/Fig4.1.3.png")
 ```
@@ -91,13 +94,13 @@ Sys.setlocale("LC_ALL", "Korean")
 print(data[[1]])
 ```
 ---
-## 주식티커 크롤링 ##
+## 주식티커 크롤링
 
 [코스피](https://finance.naver.com/sise/sise_market_sum.nhn?sosok=0&page=1)
 [코스닥](https://finance.naver.com/sise/sise_market_sum.nhn?sosok=1&page=1)
 
 ![내부자료]("img/Fig4.1.3.png")
 ---
-    ## 주식티커 크롤링2 ##
+    ## 주식티커 크롤링2 
     
 
