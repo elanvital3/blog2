@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.61.0" />
+
+
+<title>4-1.GET &amp; POST  - A Hugo website</title>
+<meta property="og:title" content="4-1.GET &amp; POST  - A Hugo website">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="/book/">Book</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">4-1.GET &amp; POST </h1>
+
+    
+    <span class="article-date">2020-01-03</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="img/Fig4.1.1.png" alt="A caption" width="100%" />
+<p class="caption">
+Figure 1: A caption
+</p>
+</div>
+<div id="crawling" class="section level3">
+<h3>Crawling</h3>
+<p>크롤링에는 <code>GET</code> 과 <code>POST</code> 크게2가지 방식이 있다.</p>
+<p><code>GET</code> 방식은 인터넷 주소를 기준으로 이에 해당하는 데이터나 파일을 요청하는 것이다. 주로 클라이언트가 요청하는 쿼리를 앰퍼샌드(&amp;) 혹은 물음표(?) 형식으로 결합해 서버에 전달한다.
+<code>POST</code> 방식은 사용자가 필요한 값을 추가해서 요청하는 방법입니다. GET 방식과 달리 클라이언트가 요청하는 쿼리를 body에 넣어서 전송하므로 요청 내역을 직접 볼 수 없다.</p>
+<hr />
+</div>
+<div id="httr-rvest-packages" class="section level2">
+<h2>### <code>httr</code>, <code>rvest</code> Packages ###</h2>
+</div>
+<div id="금융속보-크롤링-get" class="section level2">
+<h2>금융속보 크롤링 (GET)</h2>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="img/Fig4.1.2.png" alt="A caption" width="100%" />
+<p class="caption">
+Figure 2: A caption
+</p>
+</div>
+<pre class="r"><code>library(httr)
+library(rvest)
+
+url = &quot;https://finance.naver.com/news/news_list.nhn?mode=LSS2D&amp;section_id=101&amp;section_id2=258&quot;
+
+# GET
+data = GET(url = url)
+print(data) # status 확인</code></pre>
+<pre><code>## Response [https://finance.naver.com/news/news_list.nhn?mode=LSS2D&amp;section_id=101&amp;section_id2=258]
+##   Date: 2020-01-03 15:20
+##   Status: 200
+##   Content-Type: text/html;charset=EUC-KR
+##   Size: 56 kB
+## 
+## 
+## 
+## 
+## 
+## 
+## 
+## 
+## &lt;!--  global include --&gt;
+## 
+## ...</code></pre>
+<pre class="r"><code>data %&gt;% read_html(encoding = &quot;EUC-KR&quot;) %&gt;% html_nodes(&quot;.articleSubject a&quot;) %&gt;% html_attr(&quot;title&quot;)</code></pre>
+<pre><code>##  [1] &quot;뉴욕증시, 美 이란 군부 실세 제거에 긴장 고조 하락 출발&quot;                       
+##  [2] &quot;\&quot;법과 제도 싹 뜯어 고쳐달라\&quot; 성토장 된 신년회&quot;                              
+##  [3] &quot;2,400억 &#39;펀드사기&#39; 알고도 팔았나…라임-신한금투 수사의뢰 방침&quot;                
+##  [4] &quot;[유가증권 기업공시] (3일) 신세계건설 등&quot;                                      
+##  [5] &quot;[코스닥 기업공시] (3일) 유틸렉스 등&quot;                                          
+##  [6] &quot;\&quot;냄새 심한데 괜찮다라니…\&quot; 건조기 소비자, 제조사 고발&quot;                      
+##  [7] &quot;[표]아시아 주요 증시 동향(1월 3일)&quot;                                           
+##  [8] &quot;환매중단 &#39;라임&#39; 투자자들, 법적대응 돌입&quot;                                      
+##  [9] &quot;3일 장 마감 후 주요 종목뉴스&quot;                                                 
+## [10] &quot;장 마감 후 기업공시[1월 3일]&quot;                                                 
+## [11] &quot;[표]유형별 펀드 자금 동향(1월 2일)&quot;                                           
+## [12] &quot;[표]투자주체별 매매동향(1월 3일-최종치)&quot;                                      
+## [13] &quot;[표]코스닥 기관·외국인·개인 순매수·도 상위종목(1월 3일-최종치)&quot;            
+## [14] &quot;[표]유가증권 기관·외국인·개인 순매수·도 상위종목(1월 3일-최종치)&quot;          
+## [15] &quot;03일, 코스닥 기관 순매도상위에 반도체 업종 5종목&quot;                             
+## [16] &quot;03일, 외국인 코스닥에서 에이치엘비(-5.07%), 솔브레인(+0.71%) 등 순매도&quot;       
+## [17] &quot;03일, 기관 코스닥에서 네패스(+7.44%), 메디톡스(+3.59%) 등 순매수&quot;             
+## [18] &quot;03일, 코스닥 외국인 순매수상위에 반도체 업종 7종목&quot;                           
+## [19] &quot;03일, 기관 거래소에서 삼성전자(+0.54%), TIGER MSCI Korea TR(-0.43%) 등 순매도&quot;
+## [20] &quot;03일, 거래소 외국인 순매도상위에 화학 업종 6종목&quot;</code></pre>
+<pre class="r"><code># NO GET
+read_html(url,encoding = &quot;EUC-KR&quot;) %&gt;% html_nodes(&quot;.articleSubject a&quot;) %&gt;% html_attr(&quot;title&quot;)</code></pre>
+<pre><code>##  [1] &quot;뉴욕증시, 美 이란 군부 실세 제거에 긴장 고조 하락 출발&quot;                       
+##  [2] &quot;\&quot;법과 제도 싹 뜯어 고쳐달라\&quot; 성토장 된 신년회&quot;                              
+##  [3] &quot;2,400억 &#39;펀드사기&#39; 알고도 팔았나…라임-신한금투 수사의뢰 방침&quot;                
+##  [4] &quot;[유가증권 기업공시] (3일) 신세계건설 등&quot;                                      
+##  [5] &quot;[코스닥 기업공시] (3일) 유틸렉스 등&quot;                                          
+##  [6] &quot;\&quot;냄새 심한데 괜찮다라니…\&quot; 건조기 소비자, 제조사 고발&quot;                      
+##  [7] &quot;[표]아시아 주요 증시 동향(1월 3일)&quot;                                           
+##  [8] &quot;환매중단 &#39;라임&#39; 투자자들, 법적대응 돌입&quot;                                      
+##  [9] &quot;3일 장 마감 후 주요 종목뉴스&quot;                                                 
+## [10] &quot;장 마감 후 기업공시[1월 3일]&quot;                                                 
+## [11] &quot;[표]유형별 펀드 자금 동향(1월 2일)&quot;                                           
+## [12] &quot;[표]투자주체별 매매동향(1월 3일-최종치)&quot;                                      
+## [13] &quot;[표]코스닥 기관·외국인·개인 순매수·도 상위종목(1월 3일-최종치)&quot;            
+## [14] &quot;[표]유가증권 기관·외국인·개인 순매수·도 상위종목(1월 3일-최종치)&quot;          
+## [15] &quot;03일, 코스닥 기관 순매도상위에 반도체 업종 5종목&quot;                             
+## [16] &quot;03일, 외국인 코스닥에서 에이치엘비(-5.07%), 솔브레인(+0.71%) 등 순매도&quot;       
+## [17] &quot;03일, 기관 코스닥에서 네패스(+7.44%), 메디톡스(+3.59%) 등 순매수&quot;             
+## [18] &quot;03일, 코스닥 외국인 순매수상위에 반도체 업종 7종목&quot;                           
+## [19] &quot;03일, 기관 거래소에서 삼성전자(+0.54%), TIGER MSCI Korea TR(-0.43%) 등 순매도&quot;
+## [20] &quot;03일, 거래소 외국인 순매도상위에 화학 업종 6종목&quot;</code></pre>
+<ol style="list-style-type: decimal">
+<li><code>read_html</code> 을 할때 encoding 을 웹페이지와 맞춰줘야 한다.</li>
+<li>굳이 <code>GET</code> 을 사용하는 이유가 무엇일까? 해본결과 차이를 모르겠다.</li>
+<li>html_nodes 는 구글 <code>SelectorGadget</code> 을 사용하는 방법이 편하다.</li>
+<li>굳이 nodes 를 한개씩 입력할경우에는 class 는 <code>.</code> 붙고 id 는 <code>#</code> 이 붙는다.</li>
+</ol>
+</div>
+<div id="주식티커-크롤링" class="section level2">
+<h2>주식티커 크롤링</h2>
+<p><a href="https://finance.naver.com/sise/sise_market_sum.nhn?sosok=0&amp;page=1">코스피</a>
+<a href="https://finance.naver.com/sise/sise_market_sum.nhn?sosok=1&amp;page=1">코스닥</a></p>
+</div>
+<div id="내부자료" class="section level2">
+<h2><embed src="%22img/Fig4.1.3.png%22" /></h2>
+<pre><code>## 주식티커 크롤링2 ##</code></pre>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

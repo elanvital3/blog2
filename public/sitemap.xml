@@ -4,7 +4,22 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+    <lastmod>2020-01-03T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/book/</loc>
+    <lastmod>2020-01-03T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2020/01/03/4-1-get-post/</loc>
+    <lastmod>2020-01-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-01-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -24,11 +39,6 @@
   
   <url>
     <loc>/2019/12/22/old-4/</loc>
-    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
     <lastmod>2019-12-22T00:00:00+00:00</lastmod>
   </url>
   

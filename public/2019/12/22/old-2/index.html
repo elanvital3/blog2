@@ -48,6 +48,8 @@
     
     <li><a href="/about/">About</a></li>
     
+    <li><a href="/book/">Book</a></li>
+    
     <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
     
     <li><a href="https://twitter.com/rstudio">Twitter</a></li>
@@ -128,8 +130,8 @@ down_sector &lt;- POST(down_url, query = list(code = otp),
 ## 6 코스피   003580   넥스트사이언스~ 광업               5200      260   122099322800</code></pre>
 <p>디렉토리를 만들고 파일을 저장한다.</p>
 <pre class="r"><code>ifelse(dir.exists(&#39;data&#39;), FALSE, dir.create(&#39;data&#39;)) </code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>write.csv(down_sector, &#39;data/krx_sector.csv&#39;)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>write.csv(down_sector, &#39;C:/Users/elanv/OneDrive/Documents/data/krx_sector.csv&#39;)</code></pre>
 </div>
 <div id="summary" class="section level3">
 <h3>Summary</h3>

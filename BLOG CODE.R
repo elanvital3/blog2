@@ -2,7 +2,7 @@ library(blogdown)
 
 blogdown::new_site()
 
-blogdown::serve_site()
+blogdown::serve_site("2020-01-03-4-1-get-post.Rmd")
 
 new_post(title = "step.1")
 

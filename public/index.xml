@@ -6,10 +6,30 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 22 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 03 Jan 2020 21:48:51 -0700</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Book</title>
+      <link>/book/</link>
+      <pubDate>Fri, 03 Jan 2020 21:48:51 -0700</pubDate>
+      
+      <guid>/book/</guid>
+      <description>Origin Site.</description>
+    </item>
+    
+    <item>
+      <title>4-1.GET &amp; POST </title>
+      <link>/2020/01/03/4-1-get-post/</link>
+      <pubDate>Fri, 03 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/01/03/4-1-get-post/</guid>
+      <description>Figure 1: A captionCrawling크롤링에는 GET 과 POST 크게2가지 방식이 있다.
+GET 방식은 인터넷 주소를 기준으로 이에 해당하는 데이터나 파일을 요청하는 것이다. 주로 클라이언트가 요청하는 쿼리를 앰퍼샌드(&amp;amp;) 혹은 물음표(?) 형식으로 결합해 서버에 전달한다.POST 방식은 사용자가 필요한 값을 추가해서 요청하는 방법입니다. GET 방식과 달리 클라이언트가 요청하는 쿼리를 body에 넣어서 전송하므로 요청 내역을 직접 볼 수 없다.
+### httr, rvest Packages ###금융속보 크롤링 (GET)Figure 2: A captionlibrary(httr)library(rvest)url = &amp;quot;https://finance.</description>
+    </item>
     
     <item>
       <title>OLD.1</title>
@@ -51,7 +71,8 @@ library(httr)library(rvest)url=&amp;#39;https://finance.naver.com/sise/sise_de
       <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/12/22/old-4/</guid>
-      <description></description>
+      <description>모든기업 주가가져오기2장에서 한국거래소에서 가져온 종목코드로,1장에서 종목코드로 주가정보를 가져오는 방법에 적용시켜보자.
+{r} # # # CODE = read.csv(&#39;C:/Users/elanv/OneDrive/Documents/blog2/content/post/data/krx_sector.csv&#39;) # head(CODE) # # TEST_CODE = CODE[3,]$종목코드 #그전에,getSymbols 로 월별 주식을 가져와서, 컬럼명을 변경해주는 함수를 하나 만들자.```{r}library(quantmod)library(dplyr)getData&amp;lt;-function(x,from,to){if(missing (from)){stock &amp;lt;- getSymbols(paste0(x,“.KS”),auto.assign = F,periodicity = “monthly”)}else if(missing(to)){stock &amp;lt;- getSymbols(paste0(x,“.</description>
     </item>
     
     <item>

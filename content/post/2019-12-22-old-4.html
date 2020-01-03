@@ -9,4 +9,197 @@ tags: []
 
 
 
-
+<div id="모든기업-주가가져오기" class="section level1">
+<h1>모든기업 주가가져오기</h1>
+<p>2장에서 한국거래소에서 가져온 종목코드로,
+1장에서 종목코드로 주가정보를 가져오는 방법에 적용시켜보자.</p>
+</div>
+<div id="r-code-read.csvcuserselanvonedrivedocumentsblog2contentpostdatakrx_sector.csv-headcode-test_code-code3종목코드" class="section level1">
+<h1><code>{r} #  #  # CODE = read.csv('C:/Users/elanv/OneDrive/Documents/blog2/content/post/data/krx_sector.csv') # head(CODE) #  # TEST_CODE = CODE[3,]$종목코드 #</code></h1>
+</div>
+<div id="section" class="section level1">
+<h1></h1>
+</div>
+<div id="그전에" class="section level1">
+<h1>그전에,</h1>
+</div>
+<div id="getsymbols-로-월별-주식을-가져와서-컬럼명을-변경해주는-함수를-하나-만들자." class="section level1">
+<h1>getSymbols 로 월별 주식을 가져와서, 컬럼명을 변경해주는 함수를 하나 만들자.</h1>
+</div>
+<div id="r" class="section level1">
+<h1>```{r}</h1>
+</div>
+<div id="libraryquantmod" class="section level1">
+<h1>library(quantmod)</h1>
+</div>
+<div id="librarydplyr" class="section level1">
+<h1>library(dplyr)</h1>
+</div>
+<div id="section-1" class="section level1">
+<h1></h1>
+</div>
+<div id="section-2" class="section level1">
+<h1></h1>
+</div>
+<div id="getdata-functionxfromto" class="section level1">
+<h1>getData&lt;-function(x,from,to){</h1>
+</div>
+<div id="ifmissing-from" class="section level1">
+<h1>if(missing (from)){</h1>
+</div>
+<div id="stock---getsymbolspaste0x.ksauto.assign-fperiodicity-monthly" class="section level1">
+<h1>stock &lt;- getSymbols(paste0(x,“.KS”),auto.assign = F,periodicity = “monthly”)</h1>
+</div>
+<div id="else-ifmissingto" class="section level1">
+<h1>}else if(missing(to)){</h1>
+</div>
+<div id="stock---getsymbolspaste0x.ksfromfromauto.assign-fperiodicity-monthly" class="section level1">
+<h1>stock &lt;- getSymbols(paste0(x,“.KS”),from=from,auto.assign = F,periodicity = “monthly”)</h1>
+</div>
+<div id="else" class="section level1">
+<h1>}else{</h1>
+</div>
+<div id="stock---getsymbolspaste0x.ksfromfromtotoauto.assign-fperiodicity-monthly" class="section level1">
+<h1>stock &lt;- getSymbols(paste0(x,“.KS”),from=from,to=to,auto.assign = F,periodicity = “monthly”)}</h1>
+</div>
+<div id="stock-stockvostock0-거래량-0-이상" class="section level1">
+<h1>stock&lt;-stock[Vo(stock)&gt;0] #거래량 0 이상</h1>
+</div>
+<div id="colnamesstock-copenhighlowclosevolumeadjusted" class="section level1">
+<h1>colnames(stock)&lt;-c(‘open’,‘high’,‘low’,‘close’,‘volume’,‘adjusted’)</h1>
+</div>
+<div id="returnstock" class="section level1">
+<h1>return(stock)</h1>
+</div>
+<div id="section-3" class="section level1">
+<h1>}</h1>
+</div>
+<div id="section-4" class="section level1">
+<h1></h1>
+</div>
+<div id="r-1" class="section level1">
+<h1><code>#  #  #</code>{r}</h1>
+</div>
+<div id="section-5" class="section level1">
+<h1></h1>
+</div>
+<div id="price-null" class="section level1">
+<h1>price = NULL</h1>
+</div>
+<div id="i1" class="section level1">
+<h1>i=1</h1>
+</div>
+<div id="for-i-in-15" class="section level1">
+<h1>for (i in 1:5) {</h1>
+</div>
+<div id="stockgetdatacodei종목코드from-2019-01-01" class="section level1">
+<h1>stock=getData(CODE[i,‘종목코드’],from = “2019-01-01”)</h1>
+</div>
+<div id="stockcbindstockicodei." class="section level1">
+<h1>stock=cbind(stock[i,],CODE[i.])</h1>
+</div>
+<div id="price-rbindpricestock" class="section level1">
+<h1>price = rbind(price,stock)}</h1>
+</div>
+<div id="section-6" class="section level1">
+<h1></h1>
+</div>
+<div id="viewprice" class="section level1">
+<h1>View(price)</h1>
+</div>
+<div id="stock1" class="section level1">
+<h1>stock[1,]</h1>
+</div>
+<div id="section-7" class="section level1">
+<h1></h1>
+</div>
+<div id="section-8" class="section level1">
+<h1></h1>
+</div>
+<div id="getsymbols" class="section level1">
+<h1>getSymbols(</h1>
+</div>
+<div id="symbols-paste0test_code.ks" class="section level1">
+<h1>Symbols = paste0(TEST_CODE,“.KS”),</h1>
+</div>
+<div id="from-2016-06-01" class="section level1">
+<h1>from= “2016-06-01”,</h1>
+</div>
+<div id="to-2016-12-31" class="section level1">
+<h1>to = “2016-12-31”,</h1>
+</div>
+<div id="auto.assign-f" class="section level1">
+<h1>auto.assign = F,</h1>
+</div>
+<div id="periodicity-monthly" class="section level1">
+<h1>periodicity = “monthly”</h1>
+</div>
+<div id="section-9" class="section level1">
+<h1>)</h1>
+</div>
+<div id="section-10" class="section level1">
+<h1></h1>
+</div>
+<div id="try" class="section level1">
+<h1>try({</h1>
+</div>
+<div id="getsymbols-1" class="section level1">
+<h1>getSymbols(</h1>
+</div>
+<div id="symbols-paste0code2232종목코드.ks-from-2016-06-01-to-2016-12-31-auto.assign-f-periodicity-monthly-printaaasilentt-code3종목코드" class="section level1">
+<h1>Symbols = paste0(CODE[2232,]<span class="math inline">\(종목코드,&quot;.KS&quot;), # from= &quot;2016-06-01&quot;, # to = &quot;2016-12-31&quot;, # auto.assign = F, # periodicity = &quot;monthly&quot; # ) # print(&quot;AAA&quot;)},silent=T) # # # # CODE[3,]\)</span><code>종목코드</code></h1>
+</div>
+<div id="codei종목코드-getsymbols-symbols-paste0code3종목코드.ks" class="section level1">
+<h1>CODE[i,]<span class="math inline">\(종목코드 # # getSymbols( # Symbols = paste0(CODE[3,]\)</span>’종목코드’,“.KS”),</h1>
+</div>
+<div id="from-2016-06-01-1" class="section level1">
+<h1>from= “2016-06-01”,</h1>
+</div>
+<div id="to-2016-12-31-1" class="section level1">
+<h1>to = “2016-12-31”,</h1>
+</div>
+<div id="auto.assign-f-1" class="section level1">
+<h1>auto.assign = F,</h1>
+</div>
+<div id="periodicity-monthly-1" class="section level1">
+<h1>periodicity = “monthly”</h1>
+</div>
+<div id="section-11" class="section level1">
+<h1>)</h1>
+</div>
+<div id="section-12" class="section level1">
+<h1></h1>
+</div>
+<div id="i1-1" class="section level1">
+<h1>i=1</h1>
+</div>
+<div id="for-i-in-14" class="section level1">
+<h1>for (i in 1:4)</h1>
+</div>
+<div id="trycatch" class="section level1">
+<h1>{tryCatch(</h1>
+</div>
+<div id="getsymbols-2" class="section level1">
+<h1>getSymbols(</h1>
+</div>
+<div id="symbols-paste0codei종목코드.ks-from-2016-06-01-to-2016-12-31-auto.assign-f-periodicity-monthly-error-functione-printi-am-error-warning-functionw-printi-am-warning-pricenull-i1-for-i-in-14-price0-getsymbols-symbols-paste0codei종목코드.ks-from-2016-06-01-to-2016-12-31-auto.assign-f-periodicity-monthly-price0종목명-codei종목명" class="section level1">
+<h1>Symbols = paste0(CODE[i,]<span class="math inline">\(`종목코드`,&quot;.KS&quot;), # from= &quot;2016-06-01&quot;, # to = &quot;2016-12-31&quot;, # auto.assign = F, # periodicity = &quot;monthly&quot; # ), # error = function(e) print(&quot;I am error&quot;), # warning = function(w) print(&quot;I am warning&quot;) # ) # } # # price=NULL # i=1 # for (i in 1:4) { # price0 = # getSymbols( # Symbols = paste0(CODE[i,`종목코드`],&quot;.KS&quot;), # from= &quot;2016-06-01&quot;, # to = &quot;2016-12-31&quot;, # auto.assign = F, # periodicity = &quot;monthly&quot;) # price0\)</span>종목명 = CODE[i,‘종목명’]</h1>
+</div>
+<div id="price-rbindpriceprice0" class="section level1">
+<h1>price = rbind(price,price0)</h1>
+</div>
+<div id="section-13" class="section level1">
+<h1>}</h1>
+</div>
+<div id="codei종목명" class="section level1">
+<h1>CODE[i,‘종목명’]</h1>
+</div>
+<div id="section-14" class="section level1">
+<h1></h1>
+</div>
+<div id="viewprice-1" class="section level1">
+<h1>View(price)</h1>
+</div>
+<div id="section-15" class="section level1">
+<h1>```</h1>
+</div>
